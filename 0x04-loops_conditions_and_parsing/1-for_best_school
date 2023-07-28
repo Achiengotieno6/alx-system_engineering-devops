@@ -2,5 +2,5 @@
 #This script is displaying "Best School" 10 times
 for ((count = 0; count < 10; count++))
 do
-	echo "Best school"
+  echo "Best school"
 done

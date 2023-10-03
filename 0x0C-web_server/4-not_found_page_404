@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Installs and configures a nginx web server
+
+apt-get update
+apt-get -y install nginx
+
+service nginx start
+
+echo "Hello World!" > /var/www/html/index.html
+
+echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
+
+cat << 'EOF' > /etc/nginx/sites-available/default
+# Defualt server configuration
+#
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+	
+	server_name _;
+	
+	location /redirect_me {
+		return 301 https://www.youtube.com/watch?v=-BE6GyHcASE;
+	}
+	
+	location / {
+		try_files $uri $uri/ =404;
+	}
+	
+	error_page 404 /custom_404.html;
+	location = /custom_404.html {
+		root /var/www/html;
+		internal;
+	}
+}
+EOF
+
+# Apply changed configurations
+service nginx restart

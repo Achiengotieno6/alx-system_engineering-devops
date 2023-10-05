@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Installs and configures a nginx web server
+
+apt-get update
+apt-get install -y nginx
+
+#add a custom header
+sudo sed -i "/http {/a\         add_header X-Served-By $HOSTNAME;" /etc/nginx/nginx.conf
+
+service nginx restart
